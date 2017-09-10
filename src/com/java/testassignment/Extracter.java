@@ -7,18 +7,19 @@ import java.util.regex.Pattern;
 
 public class Extracter {
     private String textToExtract;
-
     Extracter(String text) {
         this.textToExtract = text;
     }
 
+    private static final Pattern entityPattern = Pattern.compile("^[A-ZА-Я][a-zа-я\\-\\_\\,\\:\\#\\.0-9]+$");
+    private static final Pattern lowerCaseWordPattern = Pattern.compile("^[^(A-ZА-Я@)][a-zа-яA-ZА-Я\\-\\_\\,\\:\\#\\.0-9]+$");
+    private static final Pattern linkPattern = Pattern.compile("^(http:\\/\\/|https:\\/\\/)[a-zA-Zа-яА-Я0-9\\.\\%\\-\\?\\$\\=\\/\\#]+$");
+    private static final Pattern twitterPattern = Pattern.compile("^[@][a-zа-я\\-\\_\\.]+$");
+
     private Queue<ConceptBase> concepts = new LinkedList<>();
 
     private ConceptBase getConceptByString(String word) {
-        Pattern entityPattern = Pattern.compile("^[A-ZА-Я][a-zа-я\\-\\_\\,\\:\\#\\.0-9]+$");
-        Pattern lowerCaseWordPattern = Pattern.compile("^[^(A-ZА-Я@)][a-zа-яA-ZА-Я\\-\\_\\,\\:\\#\\.0-9]+$");
-        Pattern linkPattern = Pattern.compile("^(http:\\/\\/|https:\\/\\/)[a-zA-Zа-яА-Я0-9\\.\\%\\-\\?\\$\\=\\/\\#]+$");
-        Pattern twitterPattern = Pattern.compile("^[@][a-zа-я\\-\\_\\.]+$");
+
         Matcher matcher;
 
         matcher = entityPattern.matcher(word);
